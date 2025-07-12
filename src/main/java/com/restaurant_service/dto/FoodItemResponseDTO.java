@@ -5,16 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RestaurantResponseDTO {
+public class FoodItemResponseDTO {
+    private UUID foodItemId;
+    private String foodName;
+    private String description;
+    private double price;
     private UUID restaurantId;
-    private String restaurantName;
-    private String address;
-    private List<FoodItemResponseDTO> menu;
 }

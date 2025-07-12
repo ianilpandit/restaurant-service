@@ -14,5 +14,5 @@ import java.util.List;
 public class RestaurantRequestDTO {
     private String name;
     private String address;
-    private List<FoodItemDTO> menu;
+    private List<FoodItemRequestDTO> menu;
 }

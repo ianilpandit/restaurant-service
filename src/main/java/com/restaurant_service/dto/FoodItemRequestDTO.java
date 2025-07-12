@@ -11,10 +11,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FoodItemDTO {
-    private Long id;
+public class FoodItemRequestDTO {
+    private UUID id;
     private String name;
     private String description;
     private double price;
-    private UUID restaurantId;
 }
