@@ -1,6 +1,7 @@
 package com.restaurant_service.service.impl;
 
-import com.restaurant_service.dto.FoodItemDTO;
+import com.restaurant_service.dto.FoodItemRequestDTO;
+import com.restaurant_service.dto.FoodItemResponseDTO;
 import com.restaurant_service.dto.RestaurantRequestDTO;
 import com.restaurant_service.dto.RestaurantResponseDTO;
 import com.restaurant_service.entity.FoodItem;
@@ -11,10 +12,7 @@ import com.restaurant_service.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,22 +55,32 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
 
-    private RestaurantResponseDTO toResponseDTO(Restaurant restaurant) {
-        List<FoodItemDTO> menu = restaurant.getMenu().stream()
-                .map(item -> FoodItemDTO.builder()
-                        .name(item.getFoodName())
-                        .description(item.getDescription())
-                        .price(item.getPrice())
-                        .build())
-                .collect(Collectors.toList());
-
+    public RestaurantResponseDTO toResponseDTO(Restaurant restaurant) {
         return RestaurantResponseDTO.builder()
-                .id(restaurant.getRestaurantID())
-                .name(restaurant.getRestaurantName())
+                .restaurantId(restaurant.getRestaurantID())
+                .restaurantName(restaurant.getRestaurantName())
                 .address(restaurant.getAddress())
-                .menu(menu)
+                .menu(
+                        restaurant.getMenu() != null ?
+                                restaurant.getMenu().stream()
+                                        .map(foodItem -> FoodItemResponseDTO.builder()
+                                                .foodItemIid(foodItem.getFoodItemId())
+                                                .foodName(foodItem.getFoodName())
+                                                .description(foodItem.getDescription())
+                                                .price(foodItem.getPrice())
+                                                .restaurantId(
+                                                        foodItem.getRestaurant() != null
+                                                                ? foodItem.getRestaurant().getRestaurantID()
+                                                                : null
+                                                )
+                                                .build())
+                                        .collect(Collectors.toList())
+                                : Collections.emptyList()
+                )
                 .build();
     }
+
+
 
 
     @Override
