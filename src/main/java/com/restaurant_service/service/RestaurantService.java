@@ -5,9 +5,10 @@ import com.restaurant_service.dto.RestaurantResponseDTO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface RestaurantService {
     RestaurantResponseDTO createRestaurant(RestaurantRequestDTO dto);
     List<RestaurantResponseDTO> getAllRestaurants();
-    Map<Long, Double> getFoodPrices(List<Long> foodItemIds);
+    Map<UUID, Double> getFoodPrices(List<UUID> foodItemIds);
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +28,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public RestaurantResponseDTO createRestaurant(RestaurantRequestDTO dto) {
         // Step 1: Create and save the Restaurant first
         Restaurant restaurant = Restaurant.builder()
-                .name(dto.getName())
+                .restaurantName(dto.getName())
                 .address(dto.getAddress())
                 .build();
 
@@ -38,7 +39,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (dto.getMenu() != null) {
             foodItems = dto.getMenu().stream()
                     .map(itemDto -> FoodItem.builder()
-                            .name(itemDto.getName())
+                            .foodName(itemDto.getName())
                             .description(itemDto.getDescription())
                             .price(itemDto.getPrice())
                             .restaurant(savedRestaurant) // assign saved restaurant
@@ -59,15 +60,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     private RestaurantResponseDTO toResponseDTO(Restaurant restaurant) {
         List<FoodItemDTO> menu = restaurant.getMenu().stream()
                 .map(item -> FoodItemDTO.builder()
-                        .name(item.getName())
+                        .name(item.getFoodName())
                         .description(item.getDescription())
                         .price(item.getPrice())
                         .build())
                 .collect(Collectors.toList());
 
         return RestaurantResponseDTO.builder()
-                .id(restaurant.getId())
-                .name(restaurant.getName())
+                .id(restaurant.getRestaurantID())
+                .name(restaurant.getRestaurantName())
                 .address(restaurant.getAddress())
                 .menu(menu)
                 .build();
@@ -83,8 +84,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 
     @Override
-    public Map<Long, Double> getFoodPrices(List<Long> foodItemIds) {
+    public Map<UUID, Double> getFoodPrices(List<UUID> foodItemIds) {
         return foodItemRepository.findAllById(foodItemIds).stream()
-                .collect(Collectors.toMap(FoodItem::getId, FoodItem::getPrice));
+                .collect(Collectors.toMap(FoodItem::getFoodItemId, FoodItem::getPrice));
     }
 }
