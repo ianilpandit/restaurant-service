@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/restaurants")
@@ -33,7 +34,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/foods/prices")
-    public ResponseEntity<Map<Long, Double>> getFoodPrices(@RequestBody List<Long> ids) {
+    public ResponseEntity<Map<UUID, Double>> getFoodPrices(@RequestBody List<UUID> ids) {
         return ResponseEntity.ok(restaurantService.getFoodPrices(ids));
     }
 }

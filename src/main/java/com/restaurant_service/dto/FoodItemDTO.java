@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,5 +16,5 @@ public class FoodItemDTO {
     private String name;
     private String description;
     private double price;
-    private Long restaurantId;
+    private UUID restaurantId;
 }

@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -14,10 +16,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FoodItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String name;
+    @Column(name = "food_item_id", nullable = false, updatable = false)
+    private UUID foodItemId;
+    private String foodName;
     private String description;
     private double price;
 
@@ -25,5 +26,12 @@ public class FoodItem {
     @JoinColumn(name = "restaurant_id")
     @JsonBackReference
     private Restaurant restaurant;
+
+    @PrePersist
+    public void prePersist() {
+        if (foodItemId == null) {
+            foodItemId = UUID.randomUUID();
+        }
+    }
 
 }

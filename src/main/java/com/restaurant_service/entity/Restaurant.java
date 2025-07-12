@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -15,16 +16,24 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Restaurant {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String name;
+    @Id
+    @Column(name = "restaurant_id", nullable = false, updatable = false)
+    private UUID restaurantID;
+
+    private String restaurantName;
     private String address;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<FoodItem> menu;
 
+    @PrePersist
+    public void prePersist() {
+        if (restaurantID == null) {
+            restaurantID = UUID.randomUUID();
+        }
+    }
 }
+
 
